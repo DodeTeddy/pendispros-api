@@ -20,7 +20,7 @@ class RegisterController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'message' => 'Registration Failed!'
-            ]);
+            ],422);
         }
 
         $user = User::create([
@@ -33,7 +33,7 @@ class RegisterController extends Controller
         if ($user) {
             return response()->json([
                 'message' => 'Registration Success!'
-            ]);
+            ],200);
         }
     }
 }

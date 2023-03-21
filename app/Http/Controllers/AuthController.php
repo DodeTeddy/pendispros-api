@@ -27,7 +27,7 @@ class AuthController extends Controller
             return response()->json([
                 'message' => 'Login Success!',
                 'token' => $token
-            ]);
+            ],200);
         }else{
             return response()->json([
                 'message' => 'Login Failed!',
@@ -52,6 +52,6 @@ class AuthController extends Controller
         $request->user()->currentAccessToken()->delete();
         return response()->json([
             'message' => 'Logout Success!'
-        ]);
+        ],200);
     }
 }
