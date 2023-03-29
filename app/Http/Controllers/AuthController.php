@@ -32,12 +32,11 @@ class AuthController extends Controller
             return response()->json([
                 'message' => 'Login Failed!',
                 'token' => null
-            ]);
+            ],422);
         }
     }
     
-    public function profile()
-    {
+    public function profile(){
         return response()->json([
             'id' => auth()->user()->id,
             'role' => auth()->user()->role,
@@ -47,8 +46,7 @@ class AuthController extends Controller
         ]);
     }
 
-    public function logout(Request $request)
-    {
+    public function logout(Request $request){
         $request->user()->currentAccessToken()->delete();
         return response()->json([
             'message' => 'Logout Success!'

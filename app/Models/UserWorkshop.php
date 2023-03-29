@@ -12,8 +12,8 @@ class UserWorkshop extends Model
     protected $fillable = [
         'user_id',
         'workshop_name',
-        'city',
-        'province',
+        'city_id',
+        'province_id',
         'address',
         'phone_number',
     ];

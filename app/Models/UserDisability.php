@@ -12,8 +12,8 @@ class UserDisability extends Model
     protected $fillable = [
         'user_id',
         'name',
-        'city',
-        'province',
+        'city_id',
+        'province_id',
         'age',
         'address',
         'phone_number',

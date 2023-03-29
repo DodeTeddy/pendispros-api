@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\City;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\UserDisability;
@@ -11,11 +12,11 @@ use Illuminate\Support\Facades\Validator;
 class UserVerificationController extends Controller
 {
     public function disability(Request $request)
-    {
+    {   
         $validator = Validator::make($request->all(), [
             'name'  => 'required|unique:user_disability',
-            'city'  => 'required',
-            'province'  => 'required|in:Bali,Jawa Timur',
+            'city_id'  => 'required|exists:city,id',
+            'province_id'  => 'required|exists:province,id',
             'age'  => 'required',
             'address'  => 'required',
             'phone_number'  => 'required',
@@ -34,8 +35,8 @@ class UserVerificationController extends Controller
             $user_disability = UserDisability::create([
                 'user_id' => auth()->user()->id,
                 'name'  => $request->name,
-                'city'  => $request->city,
-                'province'  => $request->province,
+                'city_id'  => $request->city_id,
+                'province_id'  => $request->province_id,
                 'age'  => $request->age,
                 'address'  => $request->address,
                 'phone_number'  => $request->phone_number,
@@ -62,8 +63,8 @@ class UserVerificationController extends Controller
     {
         $validator = Validator::make($request->all(),[
             'workshop_name' => 'required|unique:user_workshop',
-            'city' => 'required',
-            'province' => 'required|in:Bali,Jawa Timur',
+            'city_id'  => 'required|exists:city,id',
+            'province_id'  => 'required|exists:province,id',
             'address' => 'required',
             'phone_number' => 'required'
         ]);
@@ -79,8 +80,8 @@ class UserVerificationController extends Controller
             $user_disability = UserWorkshop::create([
                 'user_id' => auth()->user()->id,
                 'workshop_name'  => $request->workshop_name,
-                'city'  => $request->city,
-                'province'  => $request->province,
+                'city_id'  => $request->city_id,
+                'province_id'  => $request->province_id,
                 'address'  => $request->address,
                 'phone_number'  => $request->phone_number
             ]);
