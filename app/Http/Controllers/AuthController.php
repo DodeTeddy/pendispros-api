@@ -9,47 +9,22 @@ use Illuminate\Support\Facades\Auth;
 class AuthController extends Controller
 {
     public function login(Request $request){
-        // $this->validate($request, [
-        //     'login'    => 'required',
-        //     'password' => 'required',
-        // ]);
-    
-        // $login_type = filter_var($request->input('login'), FILTER_VALIDATE_EMAIL ) 
-        //     ? 'email' 
-        //     : 'username';
-    
-        // $request->merge([
-        //     $login_type => $request->input('login')
-        // ]);
-       
-        // if (Auth::attempt($request->only($login_type, 'password'))) {
-        //     $user = Auth::user();
-        //     $token =  $user->createToken('my-token')->plainTextToken;
-        //     return response()->json([
-        //         'message' => 'Login Success!',
-        //         'token' => $token
-        //     ],200);
-        // }else{
-        //     return response()->json([
-        //         'message' => 'Login Failed!',
-        //         'token' => null
-        //     ],422);
-        // }
-        if (! Auth::attempt($request->only('email', 'password'))) {
+        if (! Auth::attempt($request->only('username', 'password'))) {
             return response()->json([
                 'message' => 'Login Failed!',
                 'token' => null
             ], 401);
         }
 
-        $user = User::where('email', $request->email)->firstOrFail();
+        $user = User::where('username', $request->username)->firstOrFail();
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
-            'message' => 'Login success',
+            'message' => 'Login success!',
             'token' => $token
         ], 200);
+        
     }
     
     public function profile(){
