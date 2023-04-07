@@ -15,6 +15,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/province', [ProvinceCityController::class, 'getProvince']);
     Route::get('/city', [ProvinceCityController::class, 'getCity']);
     Route::get('/profile/detail', [DetailProfileController::class, 'getDetailProfile']);
+    Route::post('/profile/update', [DetailProfileController::class, 'editProfile']);
 });
 
 Route::post('/register', [RegisterController::class, 'register']);
