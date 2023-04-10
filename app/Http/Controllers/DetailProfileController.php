@@ -20,6 +20,7 @@ class DetailProfileController extends Controller
                 'username' => auth()->user()->username,
                 'name' => $data->name ?? null,
                 'phone' => $data->phone_number ?? null,
+                'email' => auth()->user()->email,
                 'verified_as' => auth()->user()->verified_as,
                 'disability' => $data->disability ?? null
             ],200);
@@ -31,6 +32,7 @@ class DetailProfileController extends Controller
                 'username' => auth()->user()->username,
                 'name' => $data->workshop_name ?? null,
                 'phone' => $data->phone_number ?? null,
+                'email' => auth()->user()->email,
                 'verified_as' => auth()->user()->verified_as,
                 'disability' => null
             ],200);
@@ -40,17 +42,16 @@ class DetailProfileController extends Controller
     public function editProfile(Request $request)
     {
         $validator = Validator::make($request->all(),[
-            'username' => 'required|unique:users,username',
+            'username' => 'required',
             'name' => 'required',
-            'email' => 'required|unique:users,email',
+            'email' => 'required',
             'phone' => 'required',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'message' => 'Update Failed!'
-            ]
-            ,422);
+            ]);
         }
         
         if (auth()->user()->role == 'disability') {
@@ -64,7 +65,7 @@ class DetailProfileController extends Controller
                 'phone_number' => $request->phone,
             ]);
 
-            if ($user_update && $userdis_update) {
+            if ($user_update || $userdis_update || $validator) {
                 return response()->json([
                     'message' => 'Update Success!',
                 ]);
@@ -84,7 +85,7 @@ class DetailProfileController extends Controller
                 'phone_number' => $request->phone,
             ]);
 
-            if ($user_update && $userpros_update) {
+            if ($user_update || $userpros_update || $validator) {
                 return response()->json([
                     'message' => 'Update Success!'
                 ]);
