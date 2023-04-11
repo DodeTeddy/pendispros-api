@@ -42,4 +42,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function userworkshop(){
+        return $this->hasOne(UserWorkshop::class);
+    }
+
+    public function userdisability(){
+        return $this->hasOne(UserDisability::class);
+    }
 }

@@ -23,4 +23,12 @@ class Province extends Model
     {
         return $this->hasMany(City::class, 'province_id');
     }
+
+    public function provinceWs(){
+        return $this->hasOne(UserWorkshop::class);
+    }
+
+    public function provinceDs(){
+        return $this->hasOne(UserDisability::class);
+    }
 }

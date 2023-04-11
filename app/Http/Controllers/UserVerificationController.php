@@ -51,11 +51,31 @@ class UserVerificationController extends Controller
                 ]
                 ,200);
             }
+        }else if (auth()->user()->role == 'admin') {
+            $user_disability = UserDisability::create([
+                'user_id' => auth()->user()->id,
+                'name'  => $request->name,
+                'city_id'  => $request->city_id,
+                'province_id'  => $request->province_id,
+                'age'  => $request->age,
+                'address'  => $request->address,
+                'phone_number'  => $request->phone_number,
+                'disability'  => $request->disability,
+                'explanation'  => $request->explanation
+            ]);
+
+            if ($user_disability) {
+                return response()->json([
+                    'message' => 'Verification Success!'
+                ]
+                ,200);
+            }
+        }else{
+            return response()->json([
+                'message' => 'Verification Failed!'
+            ]
+            ,422);
         }
-        return response()->json([
-            'message' => 'Verification Failed!'
-        ]
-        ,422);
     }
 
     public function workshop(Request $request)
@@ -93,10 +113,27 @@ class UserVerificationController extends Controller
                 ]
                 ,200);
             }
+        }else if (auth()->user()->role == 'admin') {
+            $user_disability = UserWorkshop::create([
+                'user_id' => auth()->user()->id,
+                'workshop_name'  => $request->workshop_name,
+                'city_id'  => $request->city_id,
+                'province_id'  => $request->province_id,
+                'address'  => $request->address,
+                'phone_number'  => $request->phone_number
+            ]);
+
+            if ($user_disability) {
+                return response()->json([
+                    'message' => 'Verification Success!'
+                ]
+                ,200);
+            }
+        }else{
+            return response()->json([
+                'message' => 'Verification Failed!'
+            ]
+            ,422);
         }
-        return response()->json([
-            'message' => 'Verification Failed!'
-        ]
-        ,422);
     }
 }
