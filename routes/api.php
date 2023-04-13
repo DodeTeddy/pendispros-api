@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DataDisabilityAndWorkshopController;
 use App\Http\Controllers\DetailProfileController;
+use App\Http\Controllers\InformationController;
 use App\Http\Controllers\ProvinceCityController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UserVerificationController;
@@ -19,6 +20,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/profile/update', [DetailProfileController::class, 'editProfile']);
     Route::get('/workshop', [DataDisabilityAndWorkshopController::class, 'getDataWorkshop']);
     Route::get('/disability', [DataDisabilityAndWorkshopController::class, 'getDataDisability']);
+    Route::post('/information/create', [InformationController::class, 'createInformation']);
+    Route::post('/information/update', [InformationController::class, 'updateInformation']);
+    Route::delete('/information/delete/{id}', [InformationController::class, 'deleteInformation']);
 });
 
 Route::post('/register', [RegisterController::class, 'register']);
