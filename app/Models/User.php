@@ -50,4 +50,9 @@ class User extends Authenticatable
     public function userdisability(){
         return $this->hasOne(UserDisability::class);
     }
+
+    public function information()
+    {
+        return $this->hasOne(Information::class);
+    }
 }

@@ -15,4 +15,9 @@ class Information extends Model
         'title_information',
         'detail_information'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'create_by');
+    }
 }

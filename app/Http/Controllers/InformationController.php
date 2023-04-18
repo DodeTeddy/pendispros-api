@@ -34,7 +34,7 @@ class InformationController extends Controller
         }
     }
 
-    public function updateInformation(Request $request)
+    public function updateInformation(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
             'title_information' => 'required',
@@ -46,7 +46,7 @@ class InformationController extends Controller
                 'message' => 'Update Information Failed!'
             ],422);
         }else{
-            $information = Information::where('create_by', auth()->user()->id)->update([
+            $information = Information::where('id', $id)->update([
                 'title_information' => $request->title_information,
                 'detail_information' => $request->detail_information
             ]);
@@ -57,6 +57,9 @@ class InformationController extends Controller
                 ],200);
             }
         }
+        return response()->json([
+            'message' => 'Update Information Success!'
+        ],200);
     }
 
     public function deleteInformation($id)
@@ -72,5 +75,14 @@ class InformationController extends Controller
                 'message' => 'Delete Information Failed!'
             ],422);
         }
+    }
+
+    public function getInformation()
+    {
+        $data = Information::where('create_by', auth()->user()->id)->get();
+        return response()->json([
+            'message' => 'Get Data Success!',
+            'data' => $data
+        ],200);
     }
 }
