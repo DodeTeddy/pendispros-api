@@ -18,7 +18,9 @@ class UserDisability extends Model
         'address',
         'phone_number',
         'disability',
-        'explanation'
+        'jenis_amputasi_kiri',
+        'jenis_amputasi_kanan',
+        'jenis_prostetik'
     ];
 
     public function user(){

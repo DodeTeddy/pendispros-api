@@ -70,7 +70,12 @@ class DataDisabilityAndWorkshopController extends Controller
 
     public function getDataDisability()
     {
-        $data = UserDisability::Select('id', 'user_id', 'city_id', 'province_id', 'name', 'address', 'phone_number', 'age', 'disability', 'explanation')->with('user', 'city', 'province')->get();
+        $data = UserDisability::Select(
+            'id', 'user_id', 'city_id', 'province_id', 'name', 'address', 'phone_number', 'age', 'disability', 
+            'jenis_amputasi_kiri',
+            'jenis_amputasi_kanan',
+            'jenis_prostetik'
+            )->with('user', 'city', 'province')->get();
         return response()->json([
             'message' => 'Get Data Success!',
             'data' => $data
@@ -87,7 +92,9 @@ class DataDisabilityAndWorkshopController extends Controller
             'phone_number' => 'required',
             'age' => 'required',
             'disability' => 'required|in:Tangan,Kaki',
-            'explanation'  => 'required'
+            'jenis_amputasi_kiri' => 'required',
+            'jenis_amputasi_kanan' => 'required',
+            'jenis_prostetik' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -103,7 +110,9 @@ class DataDisabilityAndWorkshopController extends Controller
                 'phone_number' => $request->phone_number,
                 'age' => $request->age,
                 'disability' => $request->disability,
-                'explanation'  => $request->explanation
+                'jenis_amputasi_kiri' => $request->jenis_amputasi_kiri,
+                'jenis_amputasi_kanan' => $request->jenis_amputasi_kanan,
+                'jenis_prostetik' => $request->jenis_prostetik
             ]);
 
             if ($disability_update) {

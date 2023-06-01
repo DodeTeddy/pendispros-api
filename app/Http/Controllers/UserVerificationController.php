@@ -20,7 +20,9 @@ class UserVerificationController extends Controller
             'address'  => 'required',
             'phone_number'  => 'required',
             'disability'  => 'required|in:Tangan,Kaki',
-            'explanation'  => 'required'
+            'jenis_amputasi_kiri' => 'required',
+            'jenis_amputasi_kanan' => 'required',
+            'jenis_prostetik' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -40,7 +42,9 @@ class UserVerificationController extends Controller
                 'address'  => $request->address,
                 'phone_number'  => $request->phone_number,
                 'disability'  => $request->disability,
-                'explanation'  => $request->explanation
+                'jenis_amputasi_kiri' => $request->jenis_amputasi_kiri,
+                'jenis_amputasi_kanan' => $request->jenis_amputasi_kanan,
+                'jenis_prostetik' => $request->jenis_prostetik
             ]);
     
             User::where('id',auth()->user()->id)->update(['verified_as' => auth()->user()->role]);
@@ -61,7 +65,9 @@ class UserVerificationController extends Controller
                 'address'  => $request->address,
                 'phone_number'  => $request->phone_number,
                 'disability'  => $request->disability,
-                'explanation'  => $request->explanation
+                'jenis_amputasi_kiri' => $request->jenis_amputasi_kiri,
+                'jenis_amputasi_kanan' => $request->jenis_amputasi_kanan,
+                'jenis_prostetik' => $request->jenis_prostetik
             ]);
 
             if ($user_disability) {
