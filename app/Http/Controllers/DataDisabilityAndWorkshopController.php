@@ -9,13 +9,25 @@ use Illuminate\Support\Facades\Validator;
 
 class DataDisabilityAndWorkshopController extends Controller
 {
-    public function getDataWorkshop()
+    public function getDataWorkshop(Request $request)
     {
-        $data = UserWorkshop::Select('id', 'user_id', 'city_id', 'province_id', 'workshop_name', 'address', 'phone_number')->with('user', 'city', 'province')->get();
-        return response()->json([
-            'message' => 'Get Data Success!',
-            'data' => $data
-        ],200);
+        $data = UserWorkshop::Select('id', 'user_id', 'city_id', 'province_id', 'workshop_name', 'address', 'phone_number')->with('user', 'city', 'province');
+        if ($request->search) {
+            return response()->json([
+                'message' => 'Get Data Success!',
+                'data' => $data->where('workshop_name', 'like', '%'.$request->search.'%')->simplePaginate(10)
+            ],200);
+        }else if ($request->filter) {
+            return response()->json([
+                'message' => 'Get Data Success!',
+                'data' => $data->where('province_id', $request->filter)->simplePaginate(10)
+            ],200);
+        }else {
+            return response()->json([
+                'message' => 'Get Data Success!',
+                'data' => $data->simplePaginate(10)
+            ],200);
+        }
     }
 
     public function updateDataWorkshop(Request $request, $id)
@@ -68,18 +80,30 @@ class DataDisabilityAndWorkshopController extends Controller
         }
     }
 
-    public function getDataDisability()
+    public function getDataDisability(Request $request)
     {
         $data = UserDisability::Select(
             'id', 'user_id', 'city_id', 'province_id', 'name', 'address', 'phone_number', 'age', 'disability', 
             'jenis_amputasi_kiri',
             'jenis_amputasi_kanan',
             'jenis_prostetik'
-            )->with('user', 'city', 'province')->get();
-        return response()->json([
-            'message' => 'Get Data Success!',
-            'data' => $data
-        ],200);
+            )->with('user', 'city', 'province');
+            if ($request->search) {
+                return response()->json([
+                    'message' => 'Get Data Success!',
+                    'data' => $data->where('name', 'like', '%'.$request->search.'%')->simplePaginate(10)
+                ],200);
+            }else if ($request->filter) {
+                return response()->json([
+                    'message' => 'Get Data Success!',
+                    'data' => $data->where('disability', $request->filter)->simplePaginate(10)
+                ],200);
+            }else {
+                return response()->json([
+                    'message' => 'Get Data Success!',
+                    'data' => $data->simplePaginate(10)
+                ],200);
+            }
     }
 
     public function updateDataDisability(Request $request, $id)
