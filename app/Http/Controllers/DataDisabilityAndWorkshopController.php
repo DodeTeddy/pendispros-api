@@ -15,17 +15,17 @@ class DataDisabilityAndWorkshopController extends Controller
         if ($request->search) {
             return response()->json([
                 'message' => 'Get Data Success!',
-                'data' => $data->where('workshop_name', 'like', '%'.$request->search.'%')->simplePaginate(10)
+                'data' => $data->where('workshop_name', 'like', '%'.$request->search.'%')->get()
             ],200);
         }else if ($request->filter) {
             return response()->json([
                 'message' => 'Get Data Success!',
-                'data' => $data->where('province_id', $request->filter)->simplePaginate(10)
+                'data' => $data->where('province_id', $request->filter)->get()
             ],200);
         }else {
             return response()->json([
                 'message' => 'Get Data Success!',
-                'data' => $data->simplePaginate(10)
+                'data' => $data->get()
             ],200);
         }
     }
@@ -91,17 +91,20 @@ class DataDisabilityAndWorkshopController extends Controller
             if ($request->search) {
                 return response()->json([
                     'message' => 'Get Data Success!',
-                    'data' => $data->where('name', 'like', '%'.$request->search.'%')->simplePaginate(10)
+                    'data' => $data->where('name', 'like', '%'.$request->search.'%')
+                    ->orWhere('disability', 'like', '%'.$request->search.'%')
+                    ->orWhere('jenis_prostetik', 'like', '%'.$request->search.'%')
+                    ->get()
                 ],200);
             }else if ($request->filter) {
                 return response()->json([
                     'message' => 'Get Data Success!',
-                    'data' => $data->where('disability', $request->filter)->simplePaginate(10)
+                    'data' => $data->where('disability', $request->filter)->get()
                 ],200);
             }else {
                 return response()->json([
                     'message' => 'Get Data Success!',
-                    'data' => $data->simplePaginate(10)
+                    'data' => $data->get()
                 ],200);
             }
     }
