@@ -32,6 +32,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::delete('/disability/delete/{id}', [DataDisabilityAndWorkshopController::class, 'deleteDataDisability']);
     Route::post('/verification/change', [UserVerificationController::class, 'changeVerifiedAs']);
     Route::post('/information/change', [InformationController::class, 'changeStatusInformation']);
+    Route::get('/data', [DataDisabilityAndWorkshopController::class, 'totalDataTerkini']);
 });
 
 Route::post('/register', [RegisterController::class, 'register']);

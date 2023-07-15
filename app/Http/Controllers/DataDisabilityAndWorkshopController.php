@@ -168,4 +168,21 @@ class DataDisabilityAndWorkshopController extends Controller
             ],422);
         }
     }
+
+    public function totalDataTerkini() {
+        $disability = UserDisability::Select(
+            'id', 'user_id', 'city_id', 'province_id', 'name', 'address', 'phone_number', 'age', 'disability', 
+            'jenis_amputasi_kiri',
+            'jenis_amputasi_kanan',
+            'jenis_prostetik'
+            )->with('user', 'city', 'province');
+
+        $workshop = UserWorkshop::Select('id', 'user_id', 'city_id', 'province_id', 'workshop_name', 'address', 'phone_number')->with('user', 'city', 'province');
+
+        return response()->json([
+            'message' => 'Get Data Success!',
+            'disability' => $disability->get(),
+            'prosthetic' => $workshop->get()
+        ],200);
+    }
 }
