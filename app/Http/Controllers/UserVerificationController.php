@@ -10,6 +10,26 @@ use Illuminate\Support\Facades\Validator;
 
 class UserVerificationController extends Controller
 {
+    public function changeVerifiedAs(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'user_id'  => 'required',
+            'user_role'  => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Change Verification Failed!'
+            ]
+            ,422);
+        }else{
+            User::where('id',$request->user_id)->update(['verified_as' => $request->user_role]);
+            return response()->json([
+                'message' => 'Change Verification Success!'
+            ]
+            ,200);
+        }
+    }
+
     public function disability(Request $request)
     {   
         $validator = Validator::make($request->all(), [
@@ -47,7 +67,7 @@ class UserVerificationController extends Controller
                 'jenis_prostetik' => $request->jenis_prostetik
             ]);
     
-            User::where('id',auth()->user()->id)->update(['verified_as' => auth()->user()->role]);
+            User::where('id',auth()->user()->id)->update(['verified_as' => 'waiting']);
     
             if ($user_disability) {
                 return response()->json([
@@ -111,7 +131,7 @@ class UserVerificationController extends Controller
                 'phone_number'  => $request->phone_number
             ]);
     
-            User::where('id',auth()->user()->id)->update(['verified_as' => auth()->user()->role]);
+            User::where('id',auth()->user()->id)->update(['verified_as' => 'waiting']);
     
             if ($user_disability) {
                 return response()->json([
