@@ -12,7 +12,7 @@ class InformationController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'title_information' => 'required|unique:information',
-            'detail_information' => 'required|unique:information'
+            'detail_information' => 'required|unique:information',
         ]);
 
         if ($validator->fails()) {
@@ -20,16 +20,33 @@ class InformationController extends Controller
                 'message' => 'Create Information Failed!'
             ],422);
         }else{
-            $information = Information::create([
-                'create_by' => auth()->user()->id,
-                'title_information' => $request->title_information,
-                'detail_information' => $request->detail_information
-            ]);
+            if (auth()->user()->role == 'admin') {
+                $information = Information::create([
+                    'create_by' => auth()->user()->id,
+                    'title_information' => $request->title_information,
+                    'detail_information' => $request->detail_information,
+                    'verified_status' => 'verified'
+                ]);
+    
+                if ($information) {
+                    return response()->json([
+                        'message' => 'Create Information Success!'
+                    ],200);
+                }
+            } else {
 
-            if ($information) {
-                return response()->json([
-                    'message' => 'Create Information Success!'
-                ],200);
+                $information = Information::create([
+                    'create_by' => auth()->user()->id,
+                    'title_information' => $request->title_information,
+                    'detail_information' => $request->detail_information,
+                    'verified_status' => 'notverified'
+                ]);
+    
+                if ($information) {
+                    return response()->json([
+                        'message' => 'Create Information Success!'
+                    ],200);
+                }
             }
         }
     }
@@ -38,7 +55,7 @@ class InformationController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'title_information' => 'required',
-            'detail_information' => 'required'
+            'detail_information' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -46,20 +63,33 @@ class InformationController extends Controller
                 'message' => 'Update Information Failed!'
             ],422);
         }else{
-            $information = Information::where('id', $id)->update([
-                'title_information' => $request->title_information,
-                'detail_information' => $request->detail_information
-            ]);
+            if (auth()->user()->role == 'admin') {
+                $information = Information::where('id', $id)->update([
+                    'title_information' => $request->title_information,
+                    'detail_information' => $request->detail_information,
+                    'verified_status' => 'verified'
+                ]);
+    
+                if ($information) {
+                    return response()->json([
+                        'message' => 'Update Information Success!'
+                    ],200);
+                }
+            }else{
+                $information = Information::where('id', $id)->update([
+                    'title_information' => $request->title_information,
+                    'detail_information' => $request->detail_information,
+                    'verified_status' => 'notverified'
+                ]);
+    
+                if ($information) {
+                    return response()->json([
+                        'message' => 'Update Information Success!'
+                    ],200);
+                }
 
-            if ($information) {
-                return response()->json([
-                    'message' => 'Update Information Success!'
-                ],200);
             }
         }
-        return response()->json([
-            'message' => 'Update Information Success!'
-        ],200);
     }
 
     public function deleteInformation($id)
@@ -84,5 +114,25 @@ class InformationController extends Controller
             'message' => 'Get Data Success!',
             'data' => $data
         ],200);
+    }
+
+    public function changeStatusInformation(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'information_id'  => 'required',
+            'information_status'  => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Change Verification Failed!'
+            ]
+            ,422);
+        }else{
+            Information::where('id',$request->information_id)->update(['verified_status' => $request->information_status]);
+            return response()->json([
+                'message' => 'Change Verification Success!'
+            ]
+            ,200);
+        }
     }
 }

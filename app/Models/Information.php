@@ -13,7 +13,8 @@ class Information extends Model
         'id',
         'create_by',
         'title_information',
-        'detail_information'
+        'detail_information',
+        'verified_status'
     ];
 
     public function user()

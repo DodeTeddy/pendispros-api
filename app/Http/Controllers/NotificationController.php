@@ -9,10 +9,18 @@ class NotificationController extends Controller
 {
     public function getNotification()
     {
-        $data = Information::where('create_by', '!=', auth()->user()->id)->with('user')->simplePaginate(10);
-        return response()->json([
-            'message' => 'Get Data Success!',
-            'data' => $data
-        ],200);
+        if (auth()->user()->role == 'admin') {
+            $data = Information::where('create_by', '!=', auth()->user()->id)->with('user')->get();
+            return response()->json([
+                'message' => 'Get Data Success!',
+                'data' => $data
+            ],200);
+        }else{
+            $data = Information::where('create_by', '!=', auth()->user()->id)->where('verified_status', 'verified')->with('user')->get();
+            return response()->json([
+                'message' => 'Get Data Success!',
+                'data' => $data
+            ],200);
+        }
     }
 }
